@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct CatWhiteBankApp: App {
+    @State private var falseVar: Bool? = false
     var body: some Scene {
         WindowGroup {
             ContentView()
