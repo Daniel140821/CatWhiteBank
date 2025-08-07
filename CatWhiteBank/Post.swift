@@ -256,18 +256,27 @@ func plusMoney(
         }
         
         // 读取并解析返回数据
-        guard let data = data,
-              let responseString = String(data: data, encoding: .utf8),
-              !responseString.isEmpty else {
+        guard let data = data else {
             completion(false, 0)
             return
         }
         
-        // 转换为Double类型的余额
-        let balance = Double(responseString) ?? 0
-        completion(balance > 0, balance)
+        // 解析JSON响应
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                let success = json["success"] as? Bool ?? false
+                let balance = (json["balance"] as? NSNumber)?.doubleValue ?? 0
+                completion(success, balance)
+            } else {
+                completion(false, 0)
+            }
+        } catch {
+            print("JSON解析错误: \(error.localizedDescription)")
+            completion(false, 0)
+        }
     }
     
     task.resume()
 }
-    
+
+

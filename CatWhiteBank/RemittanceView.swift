@@ -82,7 +82,7 @@ struct RemittanceView: View {
             }.padding()
             
             Button {
-                if AmountString.isEmpty && HisUsername.isEmpty && UserPassword.isEmpty{
+                if AmountString.isEmpty || HisUsername.isEmpty || UserPassword.isEmpty{
                     error = true
                     showAlert = true
                 }else{
@@ -107,10 +107,11 @@ struct RemittanceView: View {
                             }else{
                                 showAlert = true
                                 error = true
+                                print("a")
                             }
                         }
                     }else{
-                        error = false
+                        error = true
                         showAlert = true
                     }
                 }

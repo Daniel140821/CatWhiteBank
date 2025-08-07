@@ -43,7 +43,7 @@ struct CustomerServiceView: View {
                         }.padding()
                     }else{
                         VStack{
-                            Image("bank_Image")
+                            Image("Cat_Image")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 100)
@@ -53,14 +53,14 @@ struct CustomerServiceView: View {
                             
                             Text("您好!")
                                 .font(.title.bold())
-                            Text("我是你的客戶")
+                            Text("我是你的客戶 豹豹")
                                 .font(.title.bold())
                         }
                         .frame(minHeight: Proxy.size.height)
                         .frame(maxWidth: .infinity)
                     }
                 }.animation(.easeInOut, value: ChatContent)
-            }
+            }.padding(.top)
             
             Spacer()
             
@@ -77,7 +77,12 @@ struct CustomerServiceView: View {
                         
                         ChatContent.append("<userIdentifierForAPP?>\(removeIdentifier(str: question))")
                         
-                        ChatContent.append("<aiIdentifierForAPP?>喵？")
+                        let randomNumber : Int = Int.random(in: 1...300)
+                        
+                        let punctuationMarks = ["。", "！", "？"]
+                        
+                        
+                        ChatContent.append("<aiIdentifierForAPP?>\(String(repeating: "喵", count: randomNumber))\(punctuationMarks.randomElement() ?? "。")")
                         
                         question = ""
 
