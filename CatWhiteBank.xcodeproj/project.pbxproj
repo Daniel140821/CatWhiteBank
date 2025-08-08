@@ -29,9 +29,22 @@
 		65E793DD2E434E0500A7DF22 /* CatWhiteBankUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatWhiteBankUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		657793E72E4648EF007596FC /* Exceptions for "CatWhiteBank" folder in "CatWhiteBank" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 65E793C52E434E0400A7DF22 /* CatWhiteBank */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		65E793C82E434E0400A7DF22 /* CatWhiteBank */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				657793E72E4648EF007596FC /* Exceptions for "CatWhiteBank" folder in "CatWhiteBank" target */,
+			);
 			path = CatWhiteBank;
 			sourceTree = "<group>";
 		};
@@ -400,7 +413,9 @@
 				DEVELOPMENT_TEAM = 2NS4V5BBM5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CatWhiteBank/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "豹白銀行";
+				INFOPLIST_KEY_NSCameraUsageDescription = "我們需要獲得調用鏡頭的權限以掃描付款碼。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -429,7 +444,9 @@
 				DEVELOPMENT_TEAM = 2NS4V5BBM5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CatWhiteBank/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "豹白銀行";
+				INFOPLIST_KEY_NSCameraUsageDescription = "我們需要獲得調用鏡頭的權限以掃描付款碼。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

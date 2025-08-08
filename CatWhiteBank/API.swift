@@ -279,7 +279,7 @@ func plusMoney(
     task.resume()
 }
 
-private func fetchData(apiURL:String) async -> String {
+func fetchData(apiURL:String) async -> String {
     var dataString : String?
     guard let url = URL(string: apiURL) else {
         dataString = "錯誤的URL"

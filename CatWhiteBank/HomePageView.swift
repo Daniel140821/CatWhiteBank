@@ -20,6 +20,7 @@ struct HomePageView: View {
     @State var UserLevel : Double = 0.5
     @State var showCustomerServiceSheet : Bool = false
     @State var showPayCodeSheet : Bool = false
+    @State var showScanPayCodeSheet : Bool = false
     var body: some View {
         if WasLogin{
             VStack{
@@ -53,17 +54,32 @@ struct HomePageView: View {
                             .font(.largeTitle)
                             .padding()
                         
-                        Button {
-                            showPayCodeSheet = true
-                        } label: {
-                            VStack{
-                                Image(systemName: "qrcode")
-                                    .font(.largeTitle)
-                                Text("付款碼")
+                        HStack{
+                            Button {
+                                showPayCodeSheet = true
+                            } label: {
+                                VStack{
+                                    Image(systemName: "qrcode")
+                                        .font(.largeTitle)
+                                    Text("付款碼")
+                                }
                             }
-                        }.tint(.black)
-
-    
+                            .tint(Color(.label))
+                            .padding()
+                            
+                            Button {
+                                showScanPayCodeSheet = true
+                            } label: {
+                                VStack{
+                                    Image(systemName: "qrcode.viewfinder")
+                                        .font(.largeTitle)
+                                    Text("掃描付款碼")
+                                }
+                            }
+                            .tint(Color(.label))
+                            .padding()
+                            
+                        }
                         
                         Spacer()
                     }
@@ -255,6 +271,9 @@ struct HomePageView: View {
             .sheet(isPresented: $showPayCodeSheet) {
                 PayCodeView()
             }
+            .sheet(isPresented: $showScanPayCodeSheet, content: {
+                ScanPayCode()
+            })
             .background{
                 Image("bank_icon")
                     .resizable()

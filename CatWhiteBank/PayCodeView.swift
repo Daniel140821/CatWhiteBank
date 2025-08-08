@@ -15,8 +15,10 @@ struct PayCodeView: View {
     @AppStorage("username") var username : String = ""
     @AppStorage("password") var password : String = ""
     @State var amount : String = "0"
+    @State var SubmitAmount : Bool = false
     @State var jsonURL : URL?
     @State var CodeLink : URL?
+    @FocusState var FocusAmount : Bool
     var body: some View {
         VStack{
             Spacer()
@@ -53,6 +55,9 @@ struct PayCodeView: View {
                         }.onAppear{
                             jsonURL = URL(string: "https%3A%2F%2Fdanielk.top%2FApp%2FCatWhiteBank%2FPayCodeJSON.php%3Fusername%3D\(username)%26password%3D\(password)%26amount%3D\(amount)")
                             CodeLink = URL(string: "https://api.uomg.com/api/qrcode?url=\(jsonURL!)")
+                        }.onAppear{
+                            SubmitAmount = false
+                            print("off")
                         }
                     }
                     
@@ -63,12 +68,24 @@ struct PayCodeView: View {
                                 Capsule()
                                     .fill(Color(.secondarySystemFill))
                             }
+                            .focused($FocusAmount)
                             .submitLabel(.continue)
                             .keyboardType(.decimalPad)
                             .onChange(of: amount, {
-                                showPlayCode = false
+                                if String(toValidNumber(amount)) == amount && SubmitAmount{
+                                    print(SubmitAmount)
+                                    showPlayCode = true
+                                }else{
+                                    print(SubmitAmount)
+                                    showPlayCode = false
+                                }
                             })
                             .onSubmit{
+                                
+                                SubmitAmount = true
+                                
+                                print(SubmitAmount)
+                                
                                 amount = String(toValidNumber(amount))
                                 
                                 jsonURL = URL(string: "https%3A%2F%2Fdanielk.top%2FApp%2FCatWhiteBank%2FPayCodeJSON.php%3Fusername%3D\(username)%26password%3D\(password)%26amount%3D\(amount)")
@@ -76,7 +93,7 @@ struct PayCodeView: View {
                                 
                                 showPlayCode = true
                                 
-                                
+                                FocusAmount = false
                             }
                             
                     } label: {
@@ -86,12 +103,18 @@ struct PayCodeView: View {
                     
                     if !showPlayCode{
                         Button(action: {
+                            SubmitAmount = true
+                            
+                            print(SubmitAmount)
+                            
                             amount = String(toValidNumber(amount))
                             
                             jsonURL = URL(string: "https%3A%2F%2Fdanielk.top%2FApp%2FCatWhiteBank%2FPayCodeJSON.php%3Fusername%3D\(username)%26password%3D\(password)%26amount%3D\(amount)")
                             CodeLink = URL(string: "https://api.uomg.com/api/qrcode?url=\(jsonURL!)")
                             
                             showPlayCode = true
+                            
+                            FocusAmount = false
                         }, label: {
                             Text("確認")
                                 .padding(.horizontal)
@@ -217,6 +240,7 @@ struct PayCodeView: View {
                 
 
         }
+        .colorScheme(.light)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.green)
         .ignoresSafeArea(.keyboard)
