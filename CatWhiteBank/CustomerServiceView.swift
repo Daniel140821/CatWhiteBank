@@ -53,7 +53,7 @@ struct CustomerServiceView: View {
                             
                             Text("您好!")
                                 .font(.title.bold())
-                            Text("我是你的客戶 豹豹")
+                            Text("我是你的客服 豹豹")
                                 .font(.title.bold())
                         }
                         .frame(minHeight: Proxy.size.height)

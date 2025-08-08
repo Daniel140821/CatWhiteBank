@@ -36,7 +36,7 @@ struct RemittanceView: View {
                             .fill(Color(.secondarySystemFill))
                     }
                     .submitLabel(.done)
-                    .onChange(of: AmountString) { oldValue, newValue in
+                    .onChange(of: AmountString) {
                         if AmountString == "."{
                             AmountString = ""
                         }
@@ -55,7 +55,7 @@ struct RemittanceView: View {
                             .fill(Color(.secondarySystemFill))
                     }
                     .submitLabel(.done)
-                    .onChange(of: AmountString) { oldValue, newValue in
+                    .onChange(of: AmountString) {
                         if AmountString == "."{
                             AmountString = ""
                         }
@@ -72,7 +72,7 @@ struct RemittanceView: View {
                             .fill(Color(.secondarySystemFill))
                     }
                     .submitLabel(.done)
-                    .onChange(of: AmountString) { oldValue, newValue in
+                    .onChange(of: AmountString) {
                         if AmountString == "."{
                             AmountString = ""
                         }

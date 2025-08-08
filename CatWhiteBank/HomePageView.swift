@@ -19,6 +19,7 @@ struct HomePageView: View {
     @State private var MakeMoneyWait : Int = 10
     @State var UserLevel : Double = 0.5
     @State var showCustomerServiceSheet : Bool = false
+    @State var showPayCodeSheet : Bool = false
     var body: some View {
         if WasLogin{
             VStack{
@@ -34,7 +35,6 @@ struct HomePageView: View {
                         .scaledToFit()
                         .frame(width: 70, height: 70)
                         .padding(.horizontal)
-                    
                 }
                 
                 ScrollView {
@@ -53,10 +53,22 @@ struct HomePageView: View {
                             .font(.largeTitle)
                             .padding()
                         
+                        Button {
+                            showPayCodeSheet = true
+                        } label: {
+                            VStack{
+                                Image(systemName: "qrcode")
+                                    .font(.largeTitle)
+                                Text("付款碼")
+                            }
+                        }.tint(.black)
+
+    
+                        
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: 200)
+                    .frame(height: 250)
                     .background{
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color(colorScheme == .light ? Color.black : Color.white).opacity(0.1))
@@ -174,7 +186,7 @@ struct HomePageView: View {
                                 .font(.system(size: 80))
                                 .padding()
                             
-                            Text("我的客戶")
+                            Text("我的客服")
                                 .font(.title.bold())
                             
                         }
@@ -239,6 +251,9 @@ struct HomePageView: View {
             }
             .sheet(isPresented: $showCustomerServiceSheet) {
                 CustomerServiceView()
+            }
+            .sheet(isPresented: $showPayCodeSheet) {
+                PayCodeView()
             }
             .background{
                 Image("bank_icon")
