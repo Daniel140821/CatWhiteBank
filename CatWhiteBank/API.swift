@@ -107,9 +107,27 @@ func minusUserMoney(
     amount: Double,
     completion: @escaping (Bool, String, Double) -> Void
 ) {
-    // 验证金额是否为正数
+    // 验证用户名不为空
+    guard !username.trimmingCharacters(in: .whitespaces).isEmpty else {
+        completion(false, "用户名不能为空", 0)
+        return
+    }
+    
+    // 验证密码不为空
+    guard !password.trimmingCharacters(in: .whitespaces).isEmpty else {
+        completion(false, "密码不能为空", 0)
+        return
+    }
+    
+    // 验证金额有效性
     guard amount > 0 else {
         completion(false, "扣除金额必须为正数", 0)
+        return
+    }
+    
+    // 检查金额是否为有效数字
+    guard !amount.isNaN, !amount.isInfinite else {
+        completion(false, "金额格式无效", 0)
         return
     }
     
@@ -126,18 +144,14 @@ func minusUserMoney(
     
     // 对参数进行URL编码（处理特殊字符）
     guard let encodedUsername = username.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-          let encodedPassword = password.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+          let encodedPassword = password.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+          let encodedAmount = String(amount).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
         completion(false, "参数编码失败", 0)
         return
     }
     
-    // 构建POST参数（金额保留两位小数）
-    let postData = String(
-        format: "username=%@&password=%@&amount=%.2f",
-        encodedUsername,
-        encodedPassword,
-        amount
-    ).data(using: .utf8)
+    // 构建POST参数（不限制小数位数）
+    let postData = "username=\(encodedUsername)&password=\(encodedPassword)&amount=\(encodedAmount)".data(using: .utf8)
     request.httpBody = postData
     
     // 发送网络请求
@@ -165,7 +179,12 @@ func minusUserMoney(
         case 200:
             // 解析成功消息（尝试提取最新余额）
             let balance = extractBalance(from: responseString)
-            completion(true, responseString, balance)
+            // 检查服务器返回的错误信息
+            if responseString.starts(with: "错误：") {
+                completion(false, responseString, balance)
+            } else {
+                completion(true, responseString, balance)
+            }
         case 405:
             completion(false, "服务器不支持该请求方式", 0)
         case 400:
@@ -180,18 +199,18 @@ func minusUserMoney(
     task.resume()
 }
 
-/// 从服务器返回的字符串中提取余额
+// 辅助函数：从响应字符串中提取余额
 private func extractBalance(from responseString: String) -> Double {
-    // 匹配类似 "当前余额: 19983.82" 中的数字
-    let pattern = "当前余额: (\\d+\\.\\d+)"
+    // 匹配类似 "当前余额: 123.45" 或 "当前余额: 123" 等模式
+    let pattern = "当前余额: ([0-9.]+)"
     let regex = try? NSRegularExpression(pattern: pattern)
-    if let match = regex?.firstMatch(
-        in: responseString,
-        range: NSRange(responseString.startIndex..., in: responseString)
-    ) {
-        let balanceRange = match.range(at: 1)
-        if let range = Range(balanceRange, in: responseString) {
-            return Double(responseString[range]) ?? 0
+    if let matches = regex?.matches(in: responseString, range: NSRange(responseString.startIndex..., in: responseString)),
+       let match = matches.first,
+       match.numberOfRanges == 2 {
+        let balanceRange = Range(match.range(at: 1), in: responseString)
+        if let balanceString = balanceRange.flatMap({ String(responseString[$0]) }),
+           let balance = Double(balanceString) {
+            return balance
         }
     }
     return 0
