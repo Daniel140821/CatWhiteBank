@@ -252,11 +252,7 @@ func plusMoney(
     }
     
     // 构建POST参数（金额保留两位小数）
-    let postData = String(
-        format: "username=%@&amount=%.2f",
-        encodedUsername,
-        amount
-    ).data(using: .utf8)
+    let postData = "username=\(username)&amount=\(amount)".data(using: .utf8)
     request.httpBody = postData
     
     // 发送网络请求
@@ -323,3 +319,4 @@ func fetchData(apiURL:String) async -> String {
         return dataString!
     }
 }
+
